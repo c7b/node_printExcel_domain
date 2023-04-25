@@ -157,11 +157,12 @@ app.get('/download', (req, res) => {
 });
 
 // Start the server
+const ipAddress = '0.0.0.0';
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+app.listen(port, ipAddress, () => {
+    console.log(`Server is running on http://${ipAddress}:${port}`);
+  });
 
 
 
