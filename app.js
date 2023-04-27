@@ -44,7 +44,8 @@ app.get('/', function(req, res) {
 // Route to generate and download the Excel file
 app.get('/download', (req, res) => {
   // Set the content of the text file
-  const content = `This is a sample text file, the file number is ${loopNumber}`;
+  const content = `This is a text file created in the Backend with NodeJs, and fronend with Express.
+  Number of trys: ${loopNumber}`;
 
   // Set the file name
   const fileName = 'loop.txt';
