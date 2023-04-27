@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
-const xl = require('excel4node');
+//const xl = require('excel4node');
 
 
 let loopNumber;
@@ -25,6 +25,44 @@ console.log('The file exists and its contents are:', loopNumber);
 fs.writeFileSync('loop.txt', loopNumber.toString(), 'utf-8');
 
 
+const app = express();
+
+// Middleware to parse incoming request bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Serve static files from the "public" folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+// sendFile will go here
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, '/index.html'));
+  });
+
+
+// Route to generate and download the Excel file
+app.get('/download', (req, res) => {
+  // Set the content of the text file
+  const content = `This is a sample text file, the file number is ${loopNumber}`;
+
+  // Set the file name
+  const fileName = 'loop.txt';
+
+  // Set the appropriate headers and send the content as a response
+  res.setHeader('Content-Type', 'text/plain');
+  res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+  res.send(content);
+});
+
+
+// Start the server
+const port = process.env.PORT || 3000;
+app.listen(port, () => { console.log(`Server is running on http://localhost:${port}`);});
+
+
+
+/*
 // Create a new instance of a Workbook class
 var wb = new xl.Workbook();
 
@@ -96,45 +134,4 @@ let currentDate = new Date().toISOString().split('T')[0]
 
 wb.write(`Excel${currentDate}.xlsx`);
 
-
-
-const app = express();
-
-// Middleware to parse incoming request bodies
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// Serve static files from the "public" folder
-app.use(express.static(path.join(__dirname, 'public')));
-
-
-// sendFile will go here
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '/index.html'));
-  });
-
-
-
-
-// Route to generate and download the Excel file
-app.get('/download', (req, res) => {
-  // Generate the Excel file here (use your existing code to create the workbook and worksheets)
-  
-  // Save the workbook to a buffer
-  const currentDate = new Date().toISOString().split('T')[0];
-  const fileName = `Excel${currentDate}.xlsx`;
-
-  wb.writeToBuffer().then((buffer) => {
-    // Set the appropriate headers and send the buffer as a response
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
-    res.send(buffer);
-  }).catch((err) => {
-    console.error(err);
-    res.status(500).send('Error generating the Excel file');
-  });
-});
-
-// Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => { console.log(`Server is running on http://localhost:${port}`);});
+*/
