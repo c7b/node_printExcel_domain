@@ -91,36 +91,6 @@ function excelRowColToCell(row, col) {
 }
 
 ws2.cell(1,1).string('Hello World');
-/*
-}*/
-/*
-// Set value of cell A1 to 100 as a number type styled with paramaters of style
-ws.cell(1, 1)
-  .number(100)
-  .style(style);
-
-// Set value of cell B1 to 200 as a number type styled with paramaters of style
-ws.cell(1, 2)
-  .number(200)
-  .style(style);
-
-// Set value of cell C1 to a formula styled with paramaters of style
-ws.cell(1, 3)
-    .formula('A1 + B1')
-  .style(style);
-
-// Set value of cell A2 to 'string' styled with paramaters of style
-ws.cell(2, 1)
-  .string('string')
-  .style(style);
-
-// Set value of cell A3 to true as a boolean type styled with paramaters of style but with an adjustment to the font size.
-ws.cell(3, 1)
-  .bool(true)
-  .style(style)
-  .style({font: {size: 14}});
-*/
-
 let currentDate = new Date().toISOString().split('T')[0]
 
 
@@ -135,13 +105,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Serve static files from the "public" folder
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // sendFile will go here
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '/public/index.html'));
+    res.sendFile(path.join(__dirname, '/index.html'));
   });
+
 
 
 
@@ -166,10 +137,4 @@ app.get('/download', (req, res) => {
 
 // Start the server
 const port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
-
-
-
+app.listen(port, () => { console.log(`Server is running on http://localhost:${port}`);});
